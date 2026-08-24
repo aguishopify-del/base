@@ -97,7 +97,15 @@ cuidada, aplicada a los 20 productos.
       Shopify (UNPUBLISHED)
 - [ ] Fase 3 — mensaje 2 al usuario: propuesta de estilo + petición de
       confirmación y clave de imágenes IA (pendiente de enviar)
-- [ ] Fase 3b — fotos IA (solo si el usuario da clave)
+- [ ] Fase 3b — fotos IA: el usuario NO tiene clave de OpenAI, usaremos
+      **Gemini 2.5 Flash Image ("nano banana")** en su lugar. Script propio
+      creado en `scripts/generar-foto-gemini.mjs` (mismo contrato de
+      argumentos que el de OpenAI: --clave/--prompt/--salida/--ref/--tamano;
+      sin niveles de calidad, Gemini no los tiene). Endpoint:
+      `generativelanguage.googleapis.com` (alcanzable directo desde este
+      entorno, confirmado). Falta: que el usuario pegue la clave — guardarla
+      en `clave-gemini.txt` en la raíz del proyecto (excluido en
+      `.gitignore`, NUNCA commitear una clave real).
 - [ ] Fase 4 — secciones personalizadas
 - [ ] Fase 5 — plantilla de producto + páginas legales + header/footer
 - [ ] Fase 6 — publicación (recordar: el paso final de publicar el tema lo
