@@ -10,3 +10,8 @@ Thumbs.db
 .shopify
 node_modules
 *.zip
+
+# Claves — nunca deben subirse al repo
+clave-*.txt
+fotos-producto/
+fotos-originales/
