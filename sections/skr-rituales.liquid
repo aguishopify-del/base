@@ -32,6 +32,13 @@
             <div class="skr-ritual-media">
               {%- assign img = section.settings[imagen_k] -%}
               {%- assign col = section.settings[coleccion_k] -%}
+              {%- if col == blank or col.products.first.featured_image == blank -%}
+                {%- case i -%}
+                  {%- when 1 -%}{%- assign col = collections['dispositivos'] -%}
+                  {%- when 2 -%}{%- assign col = collections['formulas-antiedad'] -%}
+                  {%- when 3 -%}{%- assign col = collections['proteccion-solar-1'] -%}
+                {%- endcase -%}
+              {%- endif -%}
               {%- if img != blank -%}
                 <img src="{{ img | image_url: width: 800 }}" alt="{{ titulo_v | escape }}" loading="lazy" class="skr-img-cover">
               {%- elsif col != blank and col.featured_image != blank -%}

@@ -10,6 +10,9 @@
 {% endstyle %}
 
 {%- assign p = section.settings.producto -%}
+{%- if p == blank or p.featured_image == blank -%}
+  {%- assign p = all_products['rechargeable-facial-led-mask-7-colors-led-photon-beauty-mask-skin-rejuvenation-home-face-lifting-whitening-skin-care-beauty-mask'] -%}
+{%- endif -%}
 <section class="skr-destacado skr-section">
   <div class="skr-container skr-destacado-inner">
     <div class="skr-destacado-media skr-reveal">

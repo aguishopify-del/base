@@ -42,10 +42,14 @@
 
     <div class="skr-hero-media skr-reveal">
       {%- assign hero_img = section.settings.imagen -%}
+      {%- assign hero_producto = section.settings.producto_respaldo -%}
+      {%- if hero_producto == blank or hero_producto.featured_image == blank -%}
+        {%- assign hero_producto = all_products['rechargeable-facial-led-mask-7-colors-led-photon-beauty-mask-skin-rejuvenation-home-face-lifting-whitening-skin-care-beauty-mask'] -%}
+      {%- endif -%}
       {%- if hero_img != blank -%}
         <img src="{{ hero_img | image_url: width: 1400 }}" alt="{{ hero_img.alt | default: section.settings.titulo | escape }}" loading="eager" fetchpriority="high" class="skr-img-cover skr-hero-img">
-      {%- elsif section.settings.producto_respaldo != blank and section.settings.producto_respaldo.featured_image != blank -%}
-        <img src="{{ section.settings.producto_respaldo.featured_image | image_url: width: 1400 }}" alt="{{ section.settings.producto_respaldo.title | escape }}" loading="eager" fetchpriority="high" class="skr-img-cover skr-hero-img">
+      {%- elsif hero_producto != blank and hero_producto.featured_image != blank -%}
+        <img src="{{ hero_producto.featured_image | image_url: width: 1400 }}" alt="{{ hero_producto.title | escape }}" loading="eager" fetchpriority="high" class="skr-img-cover skr-hero-img">
       {%- else -%}
         <div class="skr-hero-img skr-hero-img-vacio"></div>
       {%- endif -%}

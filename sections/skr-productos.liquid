@@ -18,6 +18,9 @@
 
     <div class="skr-productos-grid skr-reveal-stagger skr-reveal">
       {%- assign coleccion = section.settings.coleccion -%}
+      {%- if coleccion == blank -%}
+        {%- assign coleccion = collections['mas-vendidos'] -%}
+      {%- endif -%}
       {%- if coleccion != blank -%}
         {%- for product in coleccion.products limit: section.settings.cantidad -%}
           <a href="{{ product.url }}" class="skr-producto-card skr-reveal-child">

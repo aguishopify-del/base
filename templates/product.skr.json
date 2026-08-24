@@ -3,10 +3,10 @@
     "principal": {
       "type": "skr-producto",
       "settings": {
-        "eyebrow": "Ritual Skinritual",
+        "eyebrow": "Ritual Sielora Beauty",
         "boton_texto": "Añadir al carrito",
         "boton_agotado": "Agotado",
-        "confianza_1": "Envío 24-48h",
+        "confianza_1": "Envío con seguimiento",
         "confianza_2": "Devolución 30 días",
         "confianza_3": "Pago 100% seguro",
         "descripcion_titulo": "Todos los detalles",

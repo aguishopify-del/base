@@ -1,8 +1,15 @@
-# Estado del proyecto — Skinritual
+# Estado del proyecto — Sielora Beauty (antes "Skinritual" — cambio de nombre pedido por el usuario, el nombre anterior ya lo usa otra tienda)
 
 ## Tienda
-- Dominio: skinritual-9.myshopify.com
-- Nombre: skinritual
+- Dominio: skinritual-9.myshopify.com (el dominio interno de myshopify no cambia)
+- Nombre de marca (visible en la web): Sielora Beauty
+- Nombre real de la tienda en Shopify (Configuración → General): sigue siendo
+  "skinritual" — NO se puede cambiar por la Admin API (no existe mutación de
+  escritura para el nombre de tienda), así que aparecerá en el <title> del
+  navegador y en el copyright del pie hasta que el usuario lo cambie él mismo
+  (Configuración → General → Detalles de la tienda → Nombre de la tienda,
+  2 clics). Todo lo demás (marca visible, textos, logo de texto) ya dice
+  "Sielora Beauty".
 - Email: aguishopify@gmail.com
 - Plan: Basic — moneda EUR — Spain
 
@@ -153,3 +160,44 @@ cuidada, aplicada a los 17 productos.
       - Enlace de vista previa: https://skinritual-9.myshopify.com/?preview_theme_id=204889588037
       - Editor: https://admin.shopify.com/store/skinritual-9/themes/204889588037/editor
       - Nombre del tema en el panel: "Skinritual - Nueva tienda (borrador)"
+        (el nombre interno del tema en el panel no se ha renombrado, es solo
+        una etiqueta administrativa — no aparece en la web pública)
+
+## Ronda de feedback 1 del usuario (tras primera entrega)
+El usuario dio 3 correcciones, todas ya aplicadas y subidas:
+
+1. **"Envío en 24-48h" no es cierto → borrado.** Encontré y sustituí esa
+   afirmación en TODOS los sitios donde aparecía (era fácil dejarse uno):
+   `sections/header-group.json` (anuncio superior), el default del schema de
+   `skr-confianza.liquid` (motivo 1), el default del schema y el override en
+   `templates/product.skr.json` de `skr-producto.liquid` (confianza_1), y la
+   respuesta de la primera pregunta de `skr-faq.liquid`. Sustituido por
+   mensajes honestos sin comprometer una franja horaria concreta (envío con
+   seguimiento / aviso por email al enviarse). Si el usuario me da su plazo
+   real de envío en el futuro, se puede reponer con el dato correcto.
+
+2. **"No se ven imágenes" — causa probable y arreglo aplicado.** Las
+   secciones que dependían de que un ajuste de tipo `product`/`collection`
+   del editor apuntara a un producto/colección real (`skr-hero` vía
+   `producto_respaldo`, `skr-rituales` vía `bloque_N_coleccion`,
+   `skr-destacado` vía `producto`, `skr-productos` vía `coleccion`) podían
+   fallar en resolver esa referencia (no pude confirmarlo visualmente, ver
+   limitación de entorno arriba). Blindé las CUATRO secciones añadiendo un
+   respaldo que YA NO depende de esos ajustes: usan directamente los objetos
+   globales de Liquid `all_products['<handle>']` y `collections['<handle>']`
+   con el handle real de la mascarilla LED y de las 3 colecciones/# `mas-vendidos`
+   — estos objetos son fiables al 100% en Shopify y no pueden fallar por un
+   ajuste mal resuelto. El ajuste del editor sigue existiendo y sigue
+   pudiéndose usar para elegir otro producto/colección; solo cambia el
+   respaldo cuando está vacío o no resuelve imagen.
+   **Pendiente de confirmación visual por el usuario** — si sigue sin ver
+   imágenes tras esto, el problema es otra cosa (posible fallo de CSS/asset)
+   y hay que investigar con una captura de pantalla suya.
+
+3. **Cambio de nombre de marca: Skinritual → Sielora Beauty.** Cambiado en:
+   `config/settings_data.json` (brand_headline, usado por el footer),
+   default del schema y override de `eyebrow` en `skr-producto.liquid` /
+   `product.skr.json`, y el cuerpo de la página "Aviso legal" (mencionaba la
+   marca varias veces). El nombre REAL de la tienda en Shopify (afecta al
+   `<title>` del navegador y al copyright del pie) no se puede cambiar por
+   API — ver nota en la sección "Tienda" arriba, es el único cabo suelto.
