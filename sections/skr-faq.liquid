@@ -1,0 +1,82 @@
+{{ 'skr-styles.css' | asset_url | stylesheet_tag }}
+
+{% style %}
+  #shopify-section-{{ section.id }} {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    background: {{ section.settings.color_fondo }};
+  }
+{% endstyle %}
+
+<section class="skr-faq skr-section">
+  <div class="skr-container skr-faq-inner">
+    <div class="skr-faq-cabecera skr-reveal">
+      {%- if section.settings.eyebrow != blank -%}<p class="skr-eyebrow">{{ section.settings.eyebrow }}</p>{%- endif -%}
+      <h2 class="skr-h2">{{ section.settings.titulo }}</h2>
+      <p class="skr-body">{{ section.settings.texto }}</p>
+    </div>
+    <div class="skr-faq-lista skr-reveal">
+      {%- for i in (1..6) -%}
+        {%- assign p_k = 'pregunta_' | append: i -%}
+        {%- assign r_k = 'respuesta_' | append: i -%}
+        {%- assign p_v = section.settings[p_k] -%}
+        {%- if p_v != blank -%}
+          <details class="skr-faq-item" {% if i == 1 %}open{% endif %}>
+            <summary class="skr-faq-pregunta">
+              {{ p_v }}
+              <span class="skr-faq-signo">+</span>
+            </summary>
+            <div class="skr-faq-respuesta">{{ section.settings[r_k] | newline_to_br }}</div>
+          </details>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+<style>
+  #shopify-section-{{ section.id }} .skr-faq-inner { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: 60px; }
+  #shopify-section-{{ section.id }} .skr-faq-item { border-bottom: 1px solid var(--skr-color-border); padding: 20px 0; }
+  #shopify-section-{{ section.id }} .skr-faq-pregunta { cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; font-weight: 500; font-size: 16px; }
+  #shopify-section-{{ section.id }} .skr-faq-pregunta::-webkit-details-marker { display: none; }
+  #shopify-section-{{ section.id }} .skr-faq-signo { font-size: 20px; color: var(--skr-color-accent-dark); transition: transform 0.3s var(--skr-ease); }
+  #shopify-section-{{ section.id }} details[open] .skr-faq-signo { transform: rotate(45deg); }
+  #shopify-section-{{ section.id }} .skr-faq-respuesta { font-size: 14.5px; color: var(--skr-color-text-muted); line-height: 1.6; padding-top: 12px; }
+  @media (max-width: 990px) {
+    #shopify-section-{{ section.id }} .skr-faq-inner { grid-template-columns: 1fr; gap: 24px; }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "SKR – Preguntas",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Texto pequeño superior", "default": "Dudas frecuentes" },
+    { "type": "text", "id": "titulo", "label": "Título", "default": "Antes de que preguntes" },
+    { "type": "textarea", "id": "texto", "label": "Texto", "default": "Todo lo que suelen preguntarnos sobre pedidos, envíos y devoluciones." },
+    { "type": "color", "id": "color_fondo", "label": "Color de fondo", "default": "#F1E8E0" },
+
+    { "type": "text", "id": "pregunta_1", "label": "Pregunta 1", "default": "¿Cuánto tarda en llegar mi pedido?" },
+    { "type": "textarea", "id": "respuesta_1", "label": "Respuesta 1", "default": "Los pedidos se preparan en 24-48h y llegan en 2-5 días laborables según tu zona." },
+
+    { "type": "text", "id": "pregunta_2", "label": "Pregunta 2", "default": "¿Puedo devolver un producto?" },
+    { "type": "textarea", "id": "respuesta_2", "label": "Respuesta 2", "default": "Sí, dispones de 30 días desde la recepción para devolver cualquier producto sin usar." },
+
+    { "type": "text", "id": "pregunta_3", "label": "Pregunta 3", "default": "¿Los productos son aptos para pieles sensibles?" },
+    { "type": "textarea", "id": "respuesta_3", "label": "Respuesta 3", "default": "La mayoría de nuestras fórmulas están pensadas para todo tipo de piel; revisa la ficha de cada producto y, ante dudas, haz una prueba en una zona pequeña antes de usarlo en toda la cara." },
+
+    { "type": "text", "id": "pregunta_4", "label": "Pregunta 4" },
+    { "type": "textarea", "id": "respuesta_4", "label": "Respuesta 4" },
+    { "type": "text", "id": "pregunta_5", "label": "Pregunta 5" },
+    { "type": "textarea", "id": "respuesta_5", "label": "Respuesta 5" },
+    { "type": "text", "id": "pregunta_6", "label": "Pregunta 6" },
+    { "type": "textarea", "id": "respuesta_6", "label": "Respuesta 6" },
+
+    { "type": "header", "content": "Espaciado" },
+    { "type": "range", "id": "padding_top", "label": "Espacio superior (px)", "min": 0, "max": 160, "step": 8, "unit": "px", "default": 88 },
+    { "type": "range", "id": "padding_bottom", "label": "Espacio inferior (px)", "min": 0, "max": 160, "step": 8, "unit": "px", "default": 88 }
+  ],
+  "presets": [ { "name": "SKR – Preguntas" } ]
+}
+{% endschema %}

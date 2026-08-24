@@ -1,0 +1,88 @@
+{{ 'skr-styles.css' | asset_url | stylesheet_tag }}
+
+{% style %}
+  #shopify-section-{{ section.id }} {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    background: {{ section.settings.color_fondo }};
+  }
+{% endstyle %}
+
+{%- assign iconos = 'envio,devolucion,pago,calidad' | split: ',' -%}
+
+<section class="skr-confianza skr-section">
+  <div class="skr-container">
+    <div class="skr-confianza-grid skr-reveal-stagger skr-reveal">
+      {%- for i in (1..4) -%}
+        {%- assign titulo_k = 'item_' | append: i | append: '_titulo' -%}
+        {%- assign texto_k = 'item_' | append: i | append: '_texto' -%}
+        {%- assign icono_k = 'item_' | append: i | append: '_icono' -%}
+        {%- assign titulo_v = section.settings[titulo_k] -%}
+        {%- if titulo_v != blank -%}
+          <div class="skr-confianza-item skr-reveal-child">
+            <span class="skr-confianza-icono">
+              {%- case section.settings[icono_k] -%}
+                {%- when 'envio' -%}
+                  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="1" y="6" width="15" height="11" rx="1.5"/><path d="M16 10h3.5L22 13.5V17h-6"/><circle cx="6" cy="19" r="1.6"/><circle cx="18" cy="19" r="1.6"/></svg>
+                {%- when 'devolucion' -%}
+                  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 12a9 9 0 1 1 2.6 6.3"/><path d="M3 21v-6h6"/></svg>
+                {%- when 'pago' -%}
+                  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/><path d="M6 15h4"/></svg>
+                {%- else -%}
+                  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2 14.9 8.6 22 9.3l-5.3 4.8 1.6 7-6.3-3.7L5.7 21l1.6-7L2 9.3l7.1-.7Z"/></svg>
+              {%- endcase -%}
+            </span>
+            <h3 class="skr-confianza-titulo">{{ titulo_v }}</h3>
+            <p class="skr-confianza-texto">{{ section.settings[texto_k] }}</p>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+<style>
+  #shopify-section-{{ section.id }} .skr-confianza-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; }
+  #shopify-section-{{ section.id }} .skr-confianza-item { text-align: center; }
+  #shopify-section-{{ section.id }} .skr-confianza-icono { display: inline-flex; align-items: center; justify-content: center; width: 56px; height: 56px; border-radius: 50%; background: var(--skr-color-bg-alt); color: var(--skr-color-accent-dark); margin-bottom: 16px; }
+  #shopify-section-{{ section.id }} .skr-confianza-titulo { font-family: var(--skr-font-titulo); font-size: 18px; font-weight: 500; margin: 0 0 8px; }
+  #shopify-section-{{ section.id }} .skr-confianza-texto { font-size: 14px; color: var(--skr-color-text-muted); margin: 0; line-height: 1.5; }
+  @media (max-width: 990px) {
+    #shopify-section-{{ section.id }} .skr-confianza-grid { grid-template-columns: repeat(2, 1fr); gap: 28px; }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "SKR – Confianza",
+  "tag": "section",
+  "settings": [
+    { "type": "color", "id": "color_fondo", "label": "Color de fondo", "default": "#FAF6F1" },
+
+    { "type": "header", "content": "Motivo 1" },
+    { "type": "select", "id": "item_1_icono", "label": "Icono", "options": [ {"value":"envio","label":"Envío"}, {"value":"devolucion","label":"Devolución"}, {"value":"pago","label":"Pago"}, {"value":"calidad","label":"Calidad"} ], "default": "envio" },
+    { "type": "text", "id": "item_1_titulo", "label": "Título", "default": "Envío en 24-48h" },
+    { "type": "textarea", "id": "item_1_texto", "label": "Texto", "default": "Pedidos preparados con mimo y en camino al día siguiente." },
+
+    { "type": "header", "content": "Motivo 2" },
+    { "type": "select", "id": "item_2_icono", "label": "Icono", "options": [ {"value":"envio","label":"Envío"}, {"value":"devolucion","label":"Devolución"}, {"value":"pago","label":"Pago"}, {"value":"calidad","label":"Calidad"} ], "default": "devolucion" },
+    { "type": "text", "id": "item_2_titulo", "label": "Título", "default": "30 días para cambiar de idea" },
+    { "type": "textarea", "id": "item_2_texto", "label": "Texto", "default": "Si no es lo que esperabas, te devolvemos el importe sin preguntas." },
+
+    { "type": "header", "content": "Motivo 3" },
+    { "type": "select", "id": "item_3_icono", "label": "Icono", "options": [ {"value":"envio","label":"Envío"}, {"value":"devolucion","label":"Devolución"}, {"value":"pago","label":"Pago"}, {"value":"calidad","label":"Calidad"} ], "default": "pago" },
+    { "type": "text", "id": "item_3_titulo", "label": "Título", "default": "Pago 100% seguro" },
+    { "type": "textarea", "id": "item_3_texto", "label": "Texto", "default": "Tus datos siempre protegidos con cifrado en cada compra." },
+
+    { "type": "header", "content": "Motivo 4" },
+    { "type": "select", "id": "item_4_icono", "label": "Icono", "options": [ {"value":"envio","label":"Envío"}, {"value":"devolucion","label":"Devolución"}, {"value":"pago","label":"Pago"}, {"value":"calidad","label":"Calidad"} ], "default": "calidad" },
+    { "type": "text", "id": "item_4_titulo", "label": "Título", "default": "Ingredientes seleccionados" },
+    { "type": "textarea", "id": "item_4_texto", "label": "Texto", "default": "Fórmulas y dispositivos elegidos por su eficacia, no por moda." },
+
+    { "type": "header", "content": "Espaciado" },
+    { "type": "range", "id": "padding_top", "label": "Espacio superior (px)", "min": 0, "max": 160, "step": 8, "unit": "px", "default": 56 },
+    { "type": "range", "id": "padding_bottom", "label": "Espacio inferior (px)", "min": 0, "max": 160, "step": 8, "unit": "px", "default": 56 }
+  ],
+  "presets": [ { "name": "SKR – Confianza" } ]
+}
+{% endschema %}

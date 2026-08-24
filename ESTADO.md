@@ -97,15 +97,25 @@ cuidada, aplicada a los 20 productos.
       Shopify (UNPUBLISHED)
 - [ ] Fase 3 — mensaje 2 al usuario: propuesta de estilo + petición de
       confirmación y clave de imágenes IA (pendiente de enviar)
-- [ ] Fase 3b — fotos IA: el usuario NO tiene clave de OpenAI, usaremos
-      **Gemini 2.5 Flash Image ("nano banana")** en su lugar. Script propio
-      creado en `scripts/generar-foto-gemini.mjs` (mismo contrato de
-      argumentos que el de OpenAI: --clave/--prompt/--salida/--ref/--tamano;
-      sin niveles de calidad, Gemini no los tiene). Endpoint:
-      `generativelanguage.googleapis.com` (alcanzable directo desde este
-      entorno, confirmado). Falta: que el usuario pegue la clave — guardarla
-      en `clave-gemini.txt` en la raíz del proyecto (excluido en
-      `.gitignore`, NUNCA commitear una clave real).
+- [x/bloqueado] Fase 3b — fotos IA:
+  - Clave de Gemini recibida y guardada (`clave-gemini.txt`) — probada:
+    responde 429 "quota exceeded, limit 0" para el modelo de imagen en el
+    plan gratuito. Gemini NO genera imágenes en plan gratuito, es una
+    restricción real de Google, no un fallo nuestro. El usuario decidió NO
+    activar facturación por ahora → seguimos con fotos reales del catálogo
+    (opción 2 que él mismo eligió).
+  - Clave de OpenAI recibida después y guardada (`clave-openai.txt`) —
+    probada: `api.openai.com` está BLOQUEADO por la política de red de este
+    entorno remoto (CONNECT 403 confirmado en el proxy, igual que los
+    dominios de Shopify). No es un problema de la clave: es un bloqueo de
+    infraestructura de este contenedor. No reintentar por esa vía.
+  - **Conclusión:** en este entorno remoto solo Gemini es alcanzable
+    técnicamente, y Gemini requiere facturación activada que el usuario no
+    quiere activar ahora mismo. Por tanto NO se generaron fotos con IA en
+    esta tanda — la tienda usa las fotos reales ya subidas a los 20
+    productos (correcto y suficiente). Si el usuario activa facturación en
+    Gemini más adelante, se puede retomar sin fricción (`clave-gemini.txt`
+    ya está guardada).
 - [ ] Fase 4 — secciones personalizadas
 - [ ] Fase 5 — plantilla de producto + páginas legales + header/footer
 - [ ] Fase 6 — publicación (recordar: el paso final de publicar el tema lo

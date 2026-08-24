@@ -1,0 +1,92 @@
+{{ 'skr-styles.css' | asset_url | stylesheet_tag }}
+{{ 'skr-scripts.js' | asset_url | script_tag }}
+
+{% style %}
+  #shopify-section-{{ section.id }} {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    background: {{ section.settings.color_fondo }};
+  }
+{% endstyle %}
+
+{%- assign p = section.settings.producto -%}
+<section class="skr-destacado skr-section">
+  <div class="skr-container skr-destacado-inner">
+    <div class="skr-destacado-media skr-reveal">
+      {%- if p != blank and p.featured_image != blank -%}
+        <img src="{{ p.featured_image | image_url: width: 1200 }}" alt="{{ p.title | escape }}" loading="lazy" class="skr-img-cover">
+      {%- else -%}
+        <div class="skr-destacado-media-vacia"></div>
+      {%- endif -%}
+    </div>
+    <div class="skr-destacado-copy skr-reveal">
+      {%- if section.settings.eyebrow != blank -%}<p class="skr-eyebrow">{{ section.settings.eyebrow }}</p>{%- endif -%}
+      <h2 class="skr-h2">{{ section.settings.titulo | default: p.title }}</h2>
+      <p class="skr-body">{{ section.settings.texto }}</p>
+
+      {%- if section.settings.mostrar_stats -%}
+        <div class="skr-destacado-stats">
+          <div class="skr-stat">
+            <span class="skr-countup skr-stat-num" data-target="{{ section.settings.stat1_numero }}" data-suffix="{{ section.settings.stat1_sufijo }}">0</span>
+            <span class="skr-stat-label">{{ section.settings.stat1_texto }}</span>
+          </div>
+          <div class="skr-stat">
+            <span class="skr-countup skr-stat-num" data-target="{{ section.settings.stat2_numero }}" data-suffix="{{ section.settings.stat2_sufijo }}">0</span>
+            <span class="skr-stat-label">{{ section.settings.stat2_texto }}</span>
+          </div>
+        </div>
+      {%- endif -%}
+
+      {%- if p != blank -%}
+        <div class="skr-destacado-precio">
+          {{ p.price | money }}
+          {%- if p.compare_at_price > p.price -%}
+            <s class="skr-destacado-precio-antes">{{ p.compare_at_price | money }}</s>
+          {%- endif -%}
+        </div>
+        <a href="{{ p.url }}" class="skr-btn skr-btn-primario">{{ section.settings.boton_texto }}</a>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+<style>
+  #shopify-section-{{ section.id }} .skr-destacado-inner { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 60px; align-items: center; }
+  #shopify-section-{{ section.id }} .skr-destacado-media { aspect-ratio: 1/1; border-radius: var(--skr-radio); overflow: hidden; background: var(--skr-color-bg-alt); }
+  #shopify-section-{{ section.id }} .skr-destacado-media-vacia { width: 100%; height: 100%; background: linear-gradient(150deg, var(--skr-color-accent), var(--skr-color-bg-alt) 220%); }
+  #shopify-section-{{ section.id }} .skr-destacado-stats { display: flex; gap: 40px; margin-bottom: 28px; }
+  #shopify-section-{{ section.id }} .skr-stat-num { display: block; font-family: var(--skr-font-titulo); font-size: 34px; color: var(--skr-color-accent-dark); }
+  #shopify-section-{{ section.id }} .skr-stat-label { font-size: 13px; color: var(--skr-color-text-muted); }
+  #shopify-section-{{ section.id }} .skr-destacado-precio { font-size: 26px; font-weight: 600; margin-bottom: 20px; display: flex; gap: 12px; align-items: baseline; }
+  #shopify-section-{{ section.id }} .skr-destacado-precio-antes { font-size: 17px; font-weight: 400; color: var(--skr-color-text-muted); }
+  @media (max-width: 990px) {
+    #shopify-section-{{ section.id }} .skr-destacado-inner { grid-template-columns: 1fr; gap: 30px; }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "SKR – Producto destacado",
+  "tag": "section",
+  "settings": [
+    { "type": "product", "id": "producto", "label": "Producto a destacar" },
+    { "type": "text", "id": "eyebrow", "label": "Texto pequeño superior", "default": "Nuestro más deseado" },
+    { "type": "text", "id": "titulo", "label": "Título (vacío = usa el del producto)" },
+    { "type": "textarea", "id": "texto", "label": "Texto", "default": "Convierte tu rutina nocturna en una sesión de spa profesional." },
+    { "type": "text", "id": "boton_texto", "label": "Texto del botón", "default": "Ver producto" },
+    { "type": "color", "id": "color_fondo", "label": "Color de fondo", "default": "#F1E8E0" },
+    { "type": "header", "content": "Cifras (opcional)" },
+    { "type": "checkbox", "id": "mostrar_stats", "label": "Mostrar cifras", "default": false },
+    { "type": "text", "id": "stat1_numero", "label": "Cifra 1", "default": "7" },
+    { "type": "text", "id": "stat1_sufijo", "label": "Sufijo cifra 1" },
+    { "type": "text", "id": "stat1_texto", "label": "Texto cifra 1", "default": "colores de luz LED" },
+    { "type": "text", "id": "stat2_numero", "label": "Cifra 2", "default": "98" },
+    { "type": "text", "id": "stat2_sufijo", "label": "Sufijo cifra 2", "default": "%" },
+    { "type": "text", "id": "stat2_texto", "label": "Texto cifra 2", "default": "clientas repetirían la compra" },
+    { "type": "header", "content": "Espaciado" },
+    { "type": "range", "id": "padding_top", "label": "Espacio superior (px)", "min": 0, "max": 160, "step": 8, "unit": "px", "default": 88 },
+    { "type": "range", "id": "padding_bottom", "label": "Espacio inferior (px)", "min": 0, "max": 160, "step": 8, "unit": "px", "default": 88 }
+  ],
+  "presets": [ { "name": "SKR – Producto destacado" } ]
+}
+{% endschema %}

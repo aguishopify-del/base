@@ -1,75 +1,96 @@
 {
   "sections": {
-    "image_banner": {
-      "type": "image-banner",
-      "blocks": {
-        "heading": {
-          "type": "heading",
-          "settings": {
-            "heading": "Browse our latest products",
-            "heading_size": "h0"
-          }
-        },
-        "button": {
-          "type": "buttons",
-          "settings": {
-            "button_label_1": "Shop all",
-            "button_link_1": "shopify://collections/all",
-            "button_style_secondary_1": true,
-            "button_label_2": "",
-            "button_link_2": "",
-            "button_style_secondary_2": false
-          }
-        }
-      },
-      "block_order": [
-        "heading",
-        "button"
-      ],
+    "skr-hero": {
+      "type": "skr-hero",
       "settings": {
-        "image_overlay_opacity": 40,
-        "image_height": "large",
-        "desktop_content_position": "bottom-center",
-        "show_text_box": false,
-        "image_behavior": "none",
-        "desktop_content_alignment": "center",
-        "color_scheme": "scheme-3",
-        "mobile_content_alignment": "center",
-        "stack_images_on_mobile": false,
-        "show_text_below": false
+        "eyebrow": "Ritual diario de belleza",
+        "titulo": "Tu piel merece un ritual, no una rutina",
+        "texto": "Dispositivos y fórmulas pensadas para transformar cinco minutos al día en el mejor cuidado que le das a tu piel.",
+        "boton_texto": "Descubrir el catálogo",
+        "boton_enlace": "/collections/all",
+        "boton2_texto": "Ver más vendidos",
+        "boton2_enlace": "/collections/mas-vendidos",
+        "producto_respaldo": "gid://shopify/Product/16104255258949",
+        "alineacion": "left",
+        "tamano_titulo": 58,
+        "tamano_texto": 18,
+        "color_fondo": "#FAF6F1",
+        "padding_top": 64,
+        "padding_bottom": 64
       }
     },
-    "featured_collection": {
-      "type": "featured-collection",
+    "skr-rituales": {
+      "type": "skr-rituales",
       "settings": {
-        "title": "Featured products",
-        "heading_size": "h2",
-        "description": "",
-        "show_description": false,
-        "description_style": "body",
-        "collection": "all",
-        "products_to_show": 8,
-        "columns_desktop": 4,
-        "color_scheme": "scheme-1",
-        "full_width": false,
-        "show_view_all": true,
-        "view_all_style": "solid",
-        "enable_desktop_slider": false,
-        "swipe_on_mobile": false,
-        "image_ratio": "adapt",
-        "image_shape": "default",
-        "show_secondary_image": true,
-        "show_vendor": false,
-        "show_rating": false,
-        "quick_add": "none",
-        "columns_mobile": "2",
-        "padding_top": 44,
-        "padding_bottom": 36
+        "eyebrow": "Tu ritual, a tu manera",
+        "titulo": "Elige por dónde empezar",
+        "texto_enlace": "Ver colección",
+        "alineacion": "left",
+        "tamano_titulo": 38,
+        "color_fondo": "#FAF6F1",
+        "bloque_1_titulo": "Dispositivos",
+        "bloque_1_texto": "LED, frío y masaje: la tecnología que usan los profesionales, ahora en casa.",
+        "bloque_1_enlace": "/collections/dispositivos",
+        "bloque_1_coleccion": "gid://shopify/Collection/698737983813",
+        "bloque_2_titulo": "Fórmulas antiedad",
+        "bloque_2_texto": "Vitamina C, retinol y activos de alta concentración para firmeza y luminosidad.",
+        "bloque_2_enlace": "/collections/formulas-antiedad",
+        "bloque_2_coleccion": "gid://shopify/Collection/698738016581",
+        "bloque_3_titulo": "Protección solar",
+        "bloque_3_texto": "El paso que ninguna rutina puede saltarse, con textura ligera y sin efecto blanco.",
+        "bloque_3_enlace": "/collections/proteccion-solar-1",
+        "bloque_3_coleccion": "gid://shopify/Collection/698738049349",
+        "padding_top": 88,
+        "padding_bottom": 88
+      }
+    },
+    "skr-destacado": {
+      "type": "skr-destacado",
+      "settings": {
+        "producto": "gid://shopify/Product/16104255258949",
+        "eyebrow": "Nuestro más deseado",
+        "titulo": "",
+        "texto": "Convierte tu rutina nocturna en una sesión de spa profesional. La fototerapia LED de 7 colores estimula la producción de colágeno y reduce la apariencia de líneas de expresión, sin salir de casa.",
+        "boton_texto": "Ver producto",
+        "color_fondo": "#F1E8E0",
+        "mostrar_stats": false,
+        "padding_top": 88,
+        "padding_bottom": 88
+      }
+    },
+    "skr-confianza": {
+      "type": "skr-confianza",
+      "settings": {
+        "color_fondo": "#FAF6F1",
+        "padding_top": 56,
+        "padding_bottom": 56
+      }
+    },
+    "skr-productos": {
+      "type": "skr-productos",
+      "settings": {
+        "eyebrow": "Los favoritos",
+        "titulo": "Más vendidos",
+        "alineacion": "left",
+        "tamano_titulo": 38,
+        "coleccion": "gid://shopify/Collection/698738082117",
+        "cantidad": 8,
+        "texto_agotado": "Agotado",
+        "boton_texto": "Ver todo el catálogo",
+        "boton_enlace": "/collections/all",
+        "color_fondo": "#FAF6F1",
+        "padding_top": 88,
+        "padding_bottom": 88
+      }
+    },
+    "skr-faq": {
+      "type": "skr-faq",
+      "settings": {
+        "color_fondo": "#F1E8E0",
+        "padding_top": 88,
+        "padding_bottom": 88
       }
     }
   },
-  "order": [
-    "image_banner",
-    "featured_collection"
-  ]
+  "order": ["skr-hero", "skr-rituales", "skr-destacado", "skr-confianza", "skr-productos", "skr-faq"]
 }

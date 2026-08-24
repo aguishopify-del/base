@@ -1,0 +1,104 @@
+{{ 'skr-styles.css' | asset_url | stylesheet_tag }}
+{{ 'skr-scripts.js' | asset_url | script_tag }}
+
+{% style %}
+  #shopify-section-{{ section.id }} {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    background: {{ section.settings.color_fondo }};
+  }
+  #shopify-section-{{ section.id }} .skr-hero-titulo {
+    font-size: {{ section.settings.tamano_titulo }}px;
+  }
+  #shopify-section-{{ section.id }} .skr-hero-texto {
+    font-size: {{ section.settings.tamano_texto }}px;
+  }
+  #shopify-section-{{ section.id }} .skr-hero-grid {
+    text-align: {{ section.settings.alineacion }};
+    justify-items: {% if section.settings.alineacion == 'center' %}center{% elsif section.settings.alineacion == 'right' %}end{% else %}start{% endif %};
+  }
+  @media (max-width: 990px) {
+    #shopify-section-{{ section.id }} .skr-hero-titulo { font-size: {{ section.settings.tamano_titulo | times: 0.62 | round }}px; }
+  }
+{% endstyle %}
+
+<section class="skr-hero skr-section" style="background: {{ section.settings.color_fondo }};">
+  <div class="skr-container skr-hero-inner">
+    <div class="skr-hero-grid skr-reveal">
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="skr-eyebrow">{{ section.settings.eyebrow }}</p>
+      {%- endif -%}
+      <h1 class="skr-h1 skr-hero-titulo">{{ section.settings.titulo }}</h1>
+      <p class="skr-body skr-hero-texto">{{ section.settings.texto | newline_to_br }}</p>
+      <div class="skr-hero-botones">
+        {%- if section.settings.boton_texto != blank -%}
+          <a href="{{ section.settings.boton_enlace | default: '#' }}" class="skr-btn skr-btn-primario">{{ section.settings.boton_texto }}</a>
+        {%- endif -%}
+        {%- if section.settings.boton2_texto != blank -%}
+          <a href="{{ section.settings.boton2_enlace | default: '#' }}" class="skr-btn skr-btn-secundario">{{ section.settings.boton2_texto }}</a>
+        {%- endif -%}
+      </div>
+    </div>
+
+    <div class="skr-hero-media skr-reveal">
+      {%- assign hero_img = section.settings.imagen -%}
+      {%- if hero_img != blank -%}
+        <img src="{{ hero_img | image_url: width: 1400 }}" alt="{{ hero_img.alt | default: section.settings.titulo | escape }}" loading="eager" fetchpriority="high" class="skr-img-cover skr-hero-img">
+      {%- elsif section.settings.producto_respaldo != blank and section.settings.producto_respaldo.featured_image != blank -%}
+        <img src="{{ section.settings.producto_respaldo.featured_image | image_url: width: 1400 }}" alt="{{ section.settings.producto_respaldo.title | escape }}" loading="eager" fetchpriority="high" class="skr-img-cover skr-hero-img">
+      {%- else -%}
+        <div class="skr-hero-img skr-hero-img-vacio"></div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+<style>
+  #shopify-section-{{ section.id }} .skr-hero-inner {
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    align-items: center;
+    gap: 56px;
+  }
+  #shopify-section-{{ section.id }} .skr-hero-media { border-radius: var(--skr-radio); overflow: hidden; aspect-ratio: 4 / 5; background: var(--skr-color-bg-alt); }
+  #shopify-section-{{ section.id }} .skr-hero-img { width: 100%; height: 100%; }
+  #shopify-section-{{ section.id }} .skr-hero-img-vacio { width: 100%; height: 100%; background: linear-gradient(160deg, var(--skr-color-bg-alt), var(--skr-color-accent) 220%); }
+  #shopify-section-{{ section.id }} .skr-hero-botones { display: flex; gap: 14px; flex-wrap: wrap; }
+  @media (max-width: 990px) {
+    #shopify-section-{{ section.id }} .skr-hero-inner { grid-template-columns: 1fr; gap: 32px; }
+    #shopify-section-{{ section.id }} .skr-hero-media { order: -1; aspect-ratio: 4 / 3; }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "SKR – Portada (hero)",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Texto pequeño superior", "default": "Ritual diario de belleza" },
+    { "type": "text", "id": "titulo", "label": "Título", "default": "Tu piel merece un ritual, no una rutina" },
+    { "type": "textarea", "id": "texto", "label": "Texto", "default": "Dispositivos y fórmulas pensadas para transformar cinco minutos al día en el mejor cuidado que le das a tu piel." },
+    { "type": "text", "id": "boton_texto", "label": "Texto botón principal", "default": "Descubrir el catálogo" },
+    { "type": "url", "id": "boton_enlace", "label": "Enlace botón principal" },
+    { "type": "text", "id": "boton2_texto", "label": "Texto botón secundario" },
+    { "type": "url", "id": "boton2_enlace", "label": "Enlace botón secundario" },
+    { "type": "header", "content": "Imagen" },
+    { "type": "image_picker", "id": "imagen", "label": "Imagen principal" },
+    { "type": "product", "id": "producto_respaldo", "label": "Producto de respaldo (si no subes imagen, se usa su foto)" },
+    { "type": "header", "content": "Tipografía y color" },
+    { "type": "select", "id": "alineacion", "label": "Alineación del texto",
+      "options": [
+        {"value": "left", "label": "Izquierda"},
+        {"value": "center", "label": "Centro"},
+        {"value": "right", "label": "Derecha"}
+      ], "default": "left" },
+    { "type": "range", "id": "tamano_titulo", "label": "Tamaño del título (px)", "min": 32, "max": 88, "step": 2, "unit": "px", "default": 58 },
+    { "type": "range", "id": "tamano_texto", "label": "Tamaño del texto (px)", "min": 14, "max": 24, "step": 1, "unit": "px", "default": 18 },
+    { "type": "color", "id": "color_fondo", "label": "Color de fondo", "default": "#FAF6F1" },
+    { "type": "header", "content": "Espaciado" },
+    { "type": "range", "id": "padding_top", "label": "Espacio superior (px)", "min": 0, "max": 160, "step": 8, "unit": "px", "default": 64 },
+    { "type": "range", "id": "padding_bottom", "label": "Espacio inferior (px)", "min": 0, "max": 160, "step": 8, "unit": "px", "default": 64 }
+  ],
+  "presets": [ { "name": "SKR – Portada (hero)" } ]
+}
+{% endschema %}

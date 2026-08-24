@@ -1,0 +1,112 @@
+{{ 'skr-styles.css' | asset_url | stylesheet_tag }}
+
+{% style %}
+  #shopify-section-{{ section.id }} {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    background: {{ section.settings.color_fondo }};
+  }
+  #shopify-section-{{ section.id }} .skr-h2 {
+    font-size: {{ section.settings.tamano_titulo }}px;
+    text-align: {{ section.settings.alineacion }};
+  }
+{% endstyle %}
+
+<section class="skr-rituales skr-section">
+  <div class="skr-container">
+    <div class="skr-rituales-cabecera skr-reveal">
+      {%- if section.settings.eyebrow != blank -%}<p class="skr-eyebrow">{{ section.settings.eyebrow }}</p>{%- endif -%}
+      <h2 class="skr-h2">{{ section.settings.titulo }}</h2>
+    </div>
+
+    <div class="skr-rituales-grid skr-reveal-stagger skr-reveal">
+      {%- for i in (1..3) -%}
+        {%- assign titulo_k = 'bloque_' | append: i | append: '_titulo' -%}
+        {%- assign texto_k = 'bloque_' | append: i | append: '_texto' -%}
+        {%- assign enlace_k = 'bloque_' | append: i | append: '_enlace' -%}
+        {%- assign imagen_k = 'bloque_' | append: i | append: '_imagen' -%}
+        {%- assign coleccion_k = 'bloque_' | append: i | append: '_coleccion' -%}
+        {%- assign titulo_v = section.settings[titulo_k] -%}
+        {%- if titulo_v != blank -%}
+          <a href="{{ section.settings[enlace_k] | default: '#' }}" class="skr-card skr-ritual-card skr-reveal-child">
+            <div class="skr-ritual-media">
+              {%- assign img = section.settings[imagen_k] -%}
+              {%- assign col = section.settings[coleccion_k] -%}
+              {%- if img != blank -%}
+                <img src="{{ img | image_url: width: 800 }}" alt="{{ titulo_v | escape }}" loading="lazy" class="skr-img-cover">
+              {%- elsif col != blank and col.featured_image != blank -%}
+                <img src="{{ col.featured_image | image_url: width: 800 }}" alt="{{ titulo_v | escape }}" loading="lazy" class="skr-img-cover">
+              {%- elsif col != blank and col.products.first.featured_image != blank -%}
+                <img src="{{ col.products.first.featured_image | image_url: width: 800 }}" alt="{{ titulo_v | escape }}" loading="lazy" class="skr-img-cover">
+              {%- else -%}
+                <div class="skr-ritual-media-vacia"></div>
+              {%- endif -%}
+            </div>
+            <div class="skr-ritual-copy">
+              <h3 class="skr-ritual-titulo">{{ titulo_v }}</h3>
+              <p class="skr-ritual-texto">{{ section.settings[texto_k] }}</p>
+              <span class="skr-ritual-cta">{{ section.settings.texto_enlace | default: 'Ver' }} →</span>
+            </div>
+          </a>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+<style>
+  #shopify-section-{{ section.id }} .skr-rituales-cabecera { margin-bottom: 40px; }
+  #shopify-section-{{ section.id }} .skr-rituales-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+  #shopify-section-{{ section.id }} .skr-ritual-card { text-decoration: none; color: inherit; display: block; overflow: hidden; }
+  #shopify-section-{{ section.id }} .skr-ritual-media { aspect-ratio: 4/3; background: var(--skr-color-bg-alt); overflow: hidden; }
+  #shopify-section-{{ section.id }} .skr-ritual-media-vacia { width: 100%; height: 100%; background: linear-gradient(150deg, var(--skr-color-bg-alt), var(--skr-color-sage) 220%); }
+  #shopify-section-{{ section.id }} .skr-ritual-copy { padding: 24px 26px 28px; }
+  #shopify-section-{{ section.id }} .skr-ritual-titulo { font-family: var(--skr-font-titulo); font-size: 22px; font-weight: 500; margin: 0 0 8px; }
+  #shopify-section-{{ section.id }} .skr-ritual-texto { font-size: 14.5px; color: var(--skr-color-text-muted); margin: 0 0 14px; line-height: 1.5; }
+  #shopify-section-{{ section.id }} .skr-ritual-cta { font-size: 13.5px; font-weight: 600; color: var(--skr-color-accent-dark); }
+  @media (max-width: 990px) {
+    #shopify-section-{{ section.id }} .skr-rituales-grid { grid-template-columns: 1fr; }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "SKR – Elige tu ritual",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Texto pequeño superior", "default": "Tu ritual, a tu manera" },
+    { "type": "text", "id": "titulo", "label": "Título", "default": "Elige por dónde empezar" },
+    { "type": "text", "id": "texto_enlace", "label": "Texto del enlace de cada tarjeta", "default": "Ver" },
+    { "type": "select", "id": "alineacion", "label": "Alineación del título",
+      "options": [ {"value": "left", "label": "Izquierda"}, {"value": "center", "label": "Centro"} ], "default": "left" },
+    { "type": "range", "id": "tamano_titulo", "label": "Tamaño del título (px)", "min": 24, "max": 60, "step": 2, "unit": "px", "default": 38 },
+    { "type": "color", "id": "color_fondo", "label": "Color de fondo", "default": "#FAF6F1" },
+
+    { "type": "header", "content": "Bloque 1" },
+    { "type": "text", "id": "bloque_1_titulo", "label": "Título", "default": "Dispositivos" },
+    { "type": "textarea", "id": "bloque_1_texto", "label": "Texto", "default": "LED, frío y masaje: la tecnología que usan los profesionales, ahora en casa." },
+    { "type": "url", "id": "bloque_1_enlace", "label": "Enlace" },
+    { "type": "image_picker", "id": "bloque_1_imagen", "label": "Imagen (opcional)" },
+    { "type": "collection", "id": "bloque_1_coleccion", "label": "Colección de respaldo (si no subes imagen)" },
+
+    { "type": "header", "content": "Bloque 2" },
+    { "type": "text", "id": "bloque_2_titulo", "label": "Título", "default": "Fórmulas antiedad" },
+    { "type": "textarea", "id": "bloque_2_texto", "label": "Texto", "default": "Vitamina C, retinol y activos de alta concentración para firmeza y luminosidad." },
+    { "type": "url", "id": "bloque_2_enlace", "label": "Enlace" },
+    { "type": "image_picker", "id": "bloque_2_imagen", "label": "Imagen (opcional)" },
+    { "type": "collection", "id": "bloque_2_coleccion", "label": "Colección de respaldo (si no subes imagen)" },
+
+    { "type": "header", "content": "Bloque 3" },
+    { "type": "text", "id": "bloque_3_titulo", "label": "Título", "default": "Protección solar" },
+    { "type": "textarea", "id": "bloque_3_texto", "label": "Texto", "default": "El paso que ninguna rutina puede saltarse, con textura ligera y sin efecto blanco." },
+    { "type": "url", "id": "bloque_3_enlace", "label": "Enlace" },
+    { "type": "image_picker", "id": "bloque_3_imagen", "label": "Imagen (opcional)" },
+    { "type": "collection", "id": "bloque_3_coleccion", "label": "Colección de respaldo (si no subes imagen)" },
+
+    { "type": "header", "content": "Espaciado" },
+    { "type": "range", "id": "padding_top", "label": "Espacio superior (px)", "min": 0, "max": 160, "step": 8, "unit": "px", "default": 88 },
+    { "type": "range", "id": "padding_bottom", "label": "Espacio inferior (px)", "min": 0, "max": 160, "step": 8, "unit": "px", "default": 88 }
+  ],
+  "presets": [ { "name": "SKR – Elige tu ritual" } ]
+}
+{% endschema %}

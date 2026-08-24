@@ -1,0 +1,95 @@
+{{ 'skr-styles.css' | asset_url | stylesheet_tag }}
+
+{% style %}
+  #shopify-section-{{ section.id }} {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    background: {{ section.settings.color_fondo }};
+  }
+  #shopify-section-{{ section.id }} .skr-h2 { font-size: {{ section.settings.tamano_titulo }}px; text-align: {{ section.settings.alineacion }}; }
+{% endstyle %}
+
+<section class="skr-productos skr-section">
+  <div class="skr-container">
+    <div class="skr-productos-cabecera skr-reveal">
+      {%- if section.settings.eyebrow != blank -%}<p class="skr-eyebrow">{{ section.settings.eyebrow }}</p>{%- endif -%}
+      <h2 class="skr-h2">{{ section.settings.titulo }}</h2>
+    </div>
+
+    <div class="skr-productos-grid skr-reveal-stagger skr-reveal">
+      {%- assign coleccion = section.settings.coleccion -%}
+      {%- if coleccion != blank -%}
+        {%- for product in coleccion.products limit: section.settings.cantidad -%}
+          <a href="{{ product.url }}" class="skr-producto-card skr-reveal-child">
+            <div class="skr-producto-media">
+              {%- if product.featured_image != blank -%}
+                <img src="{{ product.featured_image | image_url: width: 700 }}" alt="{{ product.title | escape }}" loading="lazy" class="skr-img-cover skr-producto-img-principal">
+              {%- endif -%}
+              {%- if product.images.size > 1 -%}
+                <img src="{{ product.images[1] | image_url: width: 700 }}" alt="" loading="lazy" class="skr-img-cover skr-producto-img-hover">
+              {%- endif -%}
+              {%- unless product.available -%}<span class="skr-producto-badge">{{ section.settings.texto_agotado }}</span>{%- endunless -%}
+            </div>
+            <div class="skr-producto-info">
+              <h3 class="skr-producto-titulo">{{ product.title }}</h3>
+              <div class="skr-producto-precio">
+                {{ product.price | money }}
+                {%- if product.compare_at_price > product.price -%}
+                  <s class="skr-producto-precio-antes">{{ product.compare_at_price | money }}</s>
+                {%- endif -%}
+              </div>
+            </div>
+          </a>
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+
+    {%- if section.settings.boton_texto != blank -%}
+      <div class="skr-productos-footer skr-reveal">
+        <a href="{{ section.settings.boton_enlace | default: '#' }}" class="skr-btn skr-btn-secundario">{{ section.settings.boton_texto }}</a>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+<style>
+  #shopify-section-{{ section.id }} .skr-productos-cabecera { margin-bottom: 36px; }
+  #shopify-section-{{ section.id }} .skr-productos-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+  #shopify-section-{{ section.id }} .skr-producto-card { text-decoration: none; color: inherit; display: block; }
+  #shopify-section-{{ section.id }} .skr-producto-media { position: relative; aspect-ratio: 1/1; border-radius: var(--skr-radio-sm); overflow: hidden; background: var(--skr-color-bg-alt); margin-bottom: 14px; }
+  #shopify-section-{{ section.id }} .skr-producto-img-principal, #shopify-section-{{ section.id }} .skr-producto-img-hover { position: absolute; inset: 0; transition: opacity 0.5s var(--skr-ease); }
+  #shopify-section-{{ section.id }} .skr-producto-img-hover { opacity: 0; }
+  #shopify-section-{{ section.id }} .skr-producto-card:hover .skr-producto-img-hover { opacity: 1; }
+  #shopify-section-{{ section.id }} .skr-producto-badge { position: absolute; top: 12px; left: 12px; background: var(--skr-color-text); color: #fff; font-size: 11px; font-weight: 600; padding: 5px 10px; border-radius: 999px; }
+  #shopify-section-{{ section.id }} .skr-producto-titulo { font-size: 15px; font-weight: 500; margin: 0 0 6px; line-height: 1.35; }
+  #shopify-section-{{ section.id }} .skr-producto-precio { font-size: 15px; font-weight: 600; display: flex; gap: 8px; }
+  #shopify-section-{{ section.id }} .skr-producto-precio-antes { font-weight: 400; color: var(--skr-color-text-muted); }
+  #shopify-section-{{ section.id }} .skr-productos-footer { text-align: center; margin-top: 40px; }
+  @media (max-width: 990px) {
+    #shopify-section-{{ section.id }} .skr-productos-grid { grid-template-columns: repeat(2, 1fr); gap: 18px; }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "SKR – Productos",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Texto pequeño superior", "default": "Los favoritos" },
+    { "type": "text", "id": "titulo", "label": "Título", "default": "Más vendidos" },
+    { "type": "select", "id": "alineacion", "label": "Alineación del título",
+      "options": [ {"value": "left", "label": "Izquierda"}, {"value": "center", "label": "Centro"} ], "default": "left" },
+    { "type": "range", "id": "tamano_titulo", "label": "Tamaño del título (px)", "min": 24, "max": 60, "step": 2, "unit": "px", "default": 38 },
+    { "type": "collection", "id": "coleccion", "label": "Colección a mostrar" },
+    { "type": "range", "id": "cantidad", "label": "Cuántos productos mostrar", "min": 4, "max": 12, "step": 4, "default": 8 },
+    { "type": "text", "id": "texto_agotado", "label": "Texto de \"agotado\"", "default": "Agotado" },
+    { "type": "text", "id": "boton_texto", "label": "Texto del botón inferior", "default": "Ver todo el catálogo" },
+    { "type": "url", "id": "boton_enlace", "label": "Enlace del botón inferior" },
+    { "type": "color", "id": "color_fondo", "label": "Color de fondo", "default": "#FAF6F1" },
+    { "type": "header", "content": "Espaciado" },
+    { "type": "range", "id": "padding_top", "label": "Espacio superior (px)", "min": 0, "max": 160, "step": 8, "unit": "px", "default": 88 },
+    { "type": "range", "id": "padding_bottom", "label": "Espacio inferior (px)", "min": 0, "max": 160, "step": 8, "unit": "px", "default": 88 }
+  ],
+  "presets": [ { "name": "SKR – Productos" } ]
+}
+{% endschema %}
