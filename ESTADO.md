@@ -61,7 +61,7 @@ NO en el ordenador del usuario. Eso cambia cómo se conecta con Shopify:
 - Helio - Copia de trabajo (MAIN, publicado actualmente)
 
 ## Catálogo (sondeo del producto — Fase 1)
-La tienda NO tiene un único producto: tiene **20 productos activos**, todos
+La tienda NO tiene un único producto: tiene **17 productos activos**, todos
 de la misma categoría — dispositivos y cosmética de skincare/belleza para
 rutina en casa, estilo K-beauty:
 - Aparatos: mascarilla LED facial 7 colores, ice roller, roller gua sha,
@@ -71,7 +71,7 @@ rutina en casa, estilo K-beauty:
   retinol, crema/sérum GHK-Cu, crema ácido kójico, stick cuello/escote,
   crema efecto bótox veneno de abeja, parches de colágeno contorno de ojos
 
-Precios entre 4€ y 55€. Vendor "skinritual" en los 20. Descripciones ya
+Precios entre 4€ y 55€. Vendor "skinritual" en los 17. Descripciones ya
 escritas en español, tono cercano/directo, orientadas a beneficio ("el truco
 que usan las makeup artists...", "adiós a las manchas..."). Sin
 `productType` ni `tags` rellenos todavía.
@@ -85,18 +85,18 @@ una tienda de producto único. El plan de la fase 3 se adapta: en vez de una
 página de producto "hecha a medida" por producto, se construye UNA plantilla
 de producto sólida y reutilizable (que lee los datos reales de cada
 producto vía Liquid) + una portada de marca + una página de colección
-cuidada, aplicada a los 20 productos.
+cuidada, aplicada a los 17 productos.
 
-## Fase actual
+## Fase actual — PRIMERA ENTREGA COMPLETA (pendiente de que el usuario publique)
 - [x] Fase 0 — entorno: Node 22.22.2 y npm ya venían instalados; Shopify CLI
       4.7.0 instalado pero INÚTIL en este entorno (ver bloqueo de red arriba)
 - [x] Fase 1 — conexión: hecha vía MCP (no hizo falta login de navegador,
       el conector ya estaba autorizado a la tienda correcta)
-- [x] Sondeo de catálogo: 20 productos leídos
+- [x] Sondeo de catálogo: 17 productos activos leídos
 - [x] Fase 2 — proyecto: Dawn clonado en el repo, tema borrador creado en
-      Shopify (UNPUBLISHED)
-- [ ] Fase 3 — mensaje 2 al usuario: propuesta de estilo + petición de
-      confirmación y clave de imágenes IA (pendiente de enviar)
+      Shopify (UNPUBLISHED) vía stagedUploadsCreate + themeCreate
+- [x] Fase 3 — mensaje 2 enviado y aceptado: estilo "ritual de spa en casa"
+      confirmado por el usuario tal cual se propuso
 - [x/bloqueado] Fase 3b — fotos IA:
   - Clave de Gemini recibida y guardada (`clave-gemini.txt`) — probada:
     responde 429 "quota exceeded, limit 0" para el modelo de imagen en el
@@ -112,11 +112,44 @@ cuidada, aplicada a los 20 productos.
   - **Conclusión:** en este entorno remoto solo Gemini es alcanzable
     técnicamente, y Gemini requiere facturación activada que el usuario no
     quiere activar ahora mismo. Por tanto NO se generaron fotos con IA en
-    esta tanda — la tienda usa las fotos reales ya subidas a los 20
+    esta tanda — la tienda usa las fotos reales ya subidas a los 17
     productos (correcto y suficiente). Si el usuario activa facturación en
     Gemini más adelante, se puede retomar sin fricción (`clave-gemini.txt`
     ya está guardada).
-- [ ] Fase 4 — secciones personalizadas
-- [ ] Fase 5 — plantilla de producto + páginas legales + header/footer
-- [ ] Fase 6 — publicación (recordar: el paso final de publicar el tema lo
-      hace el usuario a mano, un clic, porque themePublish está bloqueado)
+- [x] Fase 4 — secciones personalizadas creadas y subidas:
+      skr-hero, skr-rituales, skr-destacado, skr-confianza, skr-productos,
+      skr-faq, skr-producto — todas con checklist de editabilidad cumplido
+      (textos, imágenes con respaldo, tamaños, alineación, espaciado)
+- [x] Fase 5 — completada:
+      - Plantilla `product.skr.json` (secciones: producto + faq) asignada
+        automáticamente vía Admin API a los 17 productos (`templateSuffix:
+        "skr"`, verificado sin userErrors)
+      - Header: anuncio superior + menú principal ampliado con las 3
+        colecciones nuevas + catálogo + contacto
+      - Footer: reescrito con marca (nombre + descripción + redes) y menú de
+        navegación propio (incluye legales)
+      - 3 colecciones creadas (Dispositivos, Fórmulas Antiedad, Protección
+        Solar) + 1 "Más vendidos" para la portada
+      - 2 páginas legales creadas y publicadas: Aviso legal
+        (/pages/aviso-legal) y Política de cookies
+        (/pages/politica-de-cookies) — texto base, avisar al usuario que lo
+        revise con su gestoría
+      - Favicon propio (SVG, monograma "S") enlazado en `theme.liquid`
+      - Colores de marca y radios de botones/tarjetas aplicados en
+        `config/settings_data.json` (scheme-1 y scheme-2), así que el
+        carrito, buscador y demás piezas nativas de Dawn ya usan la paleta
+        de marca
+      - Falta (deliberadamente fuera de esta primera tanda, por alcance):
+        páginas nativas de Shopify (privacidad/términos/devolución/envío)
+        siguen en blanco — el usuario debe rellenarlas desde Configuración →
+        Políticas (Shopify trae plantillas, 2 clics)
+- [ ] Fase 6 — publicación: el tema está subido y verificado sin errores de
+      procesamiento (`processing: false`), pero **no lo he podido revisar
+      visualmente yo mismo** (no puedo cargar la tienda en este entorno, ver
+      bloqueo de red arriba) — hay que pedirle al usuario que confirme que
+      se ve bien antes de publicar. El paso de publicar en sí lo hace el
+      usuario a mano (un clic), porque `themePublish` está bloqueado por
+      seguridad en el conector MCP.
+      - Enlace de vista previa: https://skinritual-9.myshopify.com/?preview_theme_id=204889588037
+      - Editor: https://admin.shopify.com/store/skinritual-9/themes/204889588037/editor
+      - Nombre del tema en el panel: "Skinritual - Nueva tienda (borrador)"
